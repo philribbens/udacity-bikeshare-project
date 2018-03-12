@@ -3,12 +3,6 @@ import pandas as pd
 import calendar
 
 
-## Filenames
-chicago = 'chicago.csv'
-new_york_city = 'new_york_city.csv'
-washington = 'washington.csv'
-
-
 def get_city():
     '''Asks the user for a city and returns the filename for that city's bike share data.
 
@@ -20,11 +14,11 @@ def get_city():
     city = input('\nHello! Let\'s explore some US bikeshare data!\n'
                  'Would you like to see data for Chicago, New York, or Washington?\n').title()
     if city == 'Chicago' or city == 'C':
-        return chicago
+        return 'chicago.csv'
     elif city == 'New York' or city == "N":
-        return new_york_city
+        return 'new_york_city.csv'
     elif city == 'Washington' or city == 'W':
-        return washington
+        return 'washington.csv'
     else:
         print("\nI'm sorry, I'm not sure which city you're referring to. Let's try again.")
         return get_city()
