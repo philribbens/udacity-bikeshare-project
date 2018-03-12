@@ -271,7 +271,7 @@ def display_data(df, current_line):
     Args:
         df: dataframe of bikeshare data
     Returns:
-        If the user says yes then this function returns the next five lines 
+        If the user says yes then this function returns the next five lines
             of the dataframe and then asks the question again by calling this
             function again (recursive)
         If the user says no then this function returns, but without any value
@@ -375,9 +375,18 @@ def statistics():
     display_data(filtered_df, 0)
 
     # Restart?
-    restart = input('\nWould you like to restart? Type \'yes\' or \'no\'.\n')
-    if restart.lower() == 'yes' or restart.lower() == 'y':
-        statistics()
+    def restart_question():
+        restart = input('\nWould you like to restart? Type \'yes\' or \'no\'. (If you say no it will end the program.)\n')
+        if restart.lower() == 'yes' or restart.lower() == 'y':
+            statistics()
+        elif restart.lower() == 'no' or restart.lower() == 'n':
+            return
+        else:
+            print("\nI'm not sure if you wanted to restart or not. Let's try again.")
+            restart_question()
+
+    restart_question()
+
 
 if __name__ == "__main__":
     statistics()
