@@ -97,7 +97,7 @@ def get_day():
         return 6
     else:
         print("\nI'm sorry, I'm not sure which day of the week you're trying to filter by. Let's try again.")
-        return get_month()
+        return get_day()
 
 def popular_month(df):
     '''Given a dataframe of bikeshare data, this function returns the month with the most trips.
@@ -297,11 +297,10 @@ def statistics():
         #parse string in format yyyy-mm-dd and create date object based on those values.
         date_obj = datetime.date(int(str_date[0:4]), int(str_date[5:7]), int(str_date[8:10]))
         return date_obj.weekday() #return the day of the week that that date was
-    #store day of week, month, day of month, and hour of day values for each
+    #store day of week, month, and hour of day values for each
     #row in their own columns. Makes it easier to groupby those values later
     city_df['Day of Week'] = city_df['Start Time'].apply(get_day_of_week)
     city_df['Month'] = city_df['Start Time'].str[5:7]
-    city_df['Day of Month'] = city_df['Start Time'].str[8:10]
     city_df['Hour of Day'] = city_df['Start Time'].str[11:13]
 
     # Filter by time period that the user specifies (month, day, none)
