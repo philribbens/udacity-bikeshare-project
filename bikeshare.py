@@ -73,12 +73,12 @@ def get_month():
         return get_month()
 
 def get_day():
-    '''Asks the user for a day and returns the specified day.
+    '''Asks the user for a day of the week and returns the specified day.
 
     Args:
         none.
     Returns:
-        (int) Number represention of the day of the week, e.g. for Monday it returns 1
+        (int) Integer represention of the day of the week, e.g. for Monday it returns 0
     '''
     day_of_week = input('\nWhich day of the week? Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday?\n').title()
     if day_of_week == 'Monday':
@@ -137,7 +137,7 @@ def popular_hour(df):
     '''
     #Count the number of rows that have a particular Hour of Day value.
     trips_by_hour_of_day = df.groupby('Hour of Day')['Start Time'].count()
-    #Sort the results highest to lowest and then return the name of the day of the week that was highest (first in sorted list)
+    #Sort the results highest to lowest and then return the hour of the day that was highest (first in sorted list)
     most_pop_hour_int = trips_by_hour_of_day.sort_values(ascending=False).index[0]
     d = datetime.datetime.strptime(most_pop_hour_int, "%H")
     return "Most popular hour of the day for start time: " + d.strftime("%I %p")
@@ -149,8 +149,8 @@ def trip_duration(df):
         df: dataframe of bikeshare data
     Returns:
         (list) with two str values:
-            First value: the total trip duration in years, days, hours, minutes, and seconds
-            Second value: the average trip duration in hours, minutes, and seconds
+            First value: String that says the total trip duration in years, days, hours, minutes, and seconds
+            Second value: String that says the average trip duration in hours, minutes, and seconds
     '''
     total_trip_duration = df['Trip Duration'].sum()
     avg_trip_duration = df['Trip Duration'].mean()
@@ -234,8 +234,7 @@ def gender(df):
 
 def birth_years(df):
     '''Given a dataframe of bikeshare data, this function returns the oldest
-        birth year, the most recent birth year,
-        and the most common birth year
+        birth year, the most recent birth year, and the most common birth year
 
     Args:
         df: dataframe of bikeshare data
@@ -259,8 +258,8 @@ def birth_years(df):
 
 def display_data(df, current_line):
     '''Displays five lines of data if the user specifies that they would like to.
-    After displaying five lines, ask the user if they would like to see five more,
-    continuing asking until they say stop.
+    After displaying five lines, ask the user if they would like to see five more.
+    Continues asking until they say stop.
 
     Args:
         df: dataframe of bikeshare data
@@ -298,13 +297,14 @@ def statistics():
         #parse string in format yyyy-mm-dd and create date object based on those values.
         date_obj = datetime.date(int(str_date[0:4]), int(str_date[5:7]), int(str_date[8:10]))
         return date_obj.weekday() #return the day of the week that that date was
-    #store day of week values for each Start Time in a new column
+    #store day of week, month, day of month, and hour of day values for each
+    #row in their own columns. Makes it easier to groupby those values later
     city_df['Day of Week'] = city_df['Start Time'].apply(get_day_of_week)
     city_df['Month'] = city_df['Start Time'].str[5:7]
     city_df['Day of Month'] = city_df['Start Time'].str[8:10]
     city_df['Hour of Day'] = city_df['Start Time'].str[11:13]
 
-    # Filter by time period (month, day, none)
+    # Filter by time period that the user specifies (month, day, none)
     time_period = get_time_period()
     filter_period = time_period[0]
     filter_period_value  = time_period[1]
@@ -319,10 +319,12 @@ def statistics():
         filtered_df = city_df.loc[city_df['Day of Week'] == filter_period_value]
         filter_period_label = calendar.day_name[int(filter_period_value)]
 
+    #Print a heading that specifies which city this data is for and any filters that were applied
     print('\n')
     print(city[:-4].upper().replace("_"," ") + ' -- ' + filter_period_label.upper())
     print('-------------------------------------')
 
+    #To give some context, print the total number of trips for this city and filter
     print('Total trips: ' + "{:,}".format(filtered_df['Start Time'].count()))
 
     # What is the most popular month for start time?
@@ -353,7 +355,7 @@ def statistics():
     print('')
     print(users(filtered_df))
 
-    if city == 'chicago.csv' or city == 'new_york_city.csv':
+    if city == 'chicago.csv' or city == 'new_york_city.csv': #only those two files have this data
         # What are the counts of gender?
         print('')
         print(gender(filtered_df))
