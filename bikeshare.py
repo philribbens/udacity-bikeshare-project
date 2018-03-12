@@ -278,6 +278,9 @@ def display_data(df, current_line):
         return display_data(df, current_line)
     if display == 'no' or display == 'n':
         return
+    else:
+        print("\nI'm sorry, I'm not sure if you wanted to see more data or not. Let's try again.")
+        return display_data(df, current_line)
 
 
 def statistics():
