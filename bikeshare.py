@@ -397,7 +397,7 @@ def statistics():
             return
         else:
             print("\nI'm not sure if you wanted to restart or not. Let's try again.")
-            restart_question()
+            return restart_question()
 
     restart_question()
 
