@@ -198,7 +198,7 @@ def popular_trip(df):
         stations as well as how many trips that accounted for and what
         percentage of trips that accounted for
     '''
-    trip_counts = df.groupby(['Start Station','End Station'])['Start Time'].count()
+    trip_counts = df.groupby(['Start Station', 'End Station'])['Start Time'].count()
     sorted_trip_stations = trip_counts.sort_values(ascending=False)
     total_trips = df['Start Station'].count()
     return "Most popular trip: " + "\n  Start station: " + str(sorted_trip_stations.index[0][0]) + "\n  End station: " + str(sorted_trip_stations.index[0][1]) + "\n  (" + str(sorted_trip_stations[0]) +  " trips, " + '{0:.2f}%'.format(((sorted_trip_stations[0]/total_trips) * 100)) + " of trips)"
@@ -297,7 +297,16 @@ def statistics():
     city_df = pd.read_csv(city)
 
     def get_day_of_week(str_date):
-        #parse string in format yyyy-mm-dd and create date object based on those values.
+        '''Takes a date in the format yyyy-mm-dd and returns an integer
+            represention of the day of the week, e.g. for Monday it returns 0
+
+        Args:
+            str_date: date in the format yyyy-mm-dd
+        Returns:
+            (int) Integer represention of the day of the week,
+                e.g. for Monday it returns 0
+        '''
+    #parse string in format yyyy-mm-dd and create date object based on those values.
         date_obj = datetime.date(int(str_date[0:4]), int(str_date[5:7]), int(str_date[8:10]))
         return date_obj.weekday() #return the day of the week that that date was
     #store day of week, month, and hour of day values for each
@@ -309,7 +318,7 @@ def statistics():
     # Filter by time period that the user specifies (month, day, none)
     time_period = get_time_period()
     filter_period = time_period[0]
-    filter_period_value  = time_period[1]
+    filter_period_value = time_period[1]
     filter_period_label = 'No filter'
 
     if filter_period == 'none':
@@ -323,7 +332,7 @@ def statistics():
 
     #Print a heading that specifies which city this data is for and any filters that were applied
     print('\n')
-    print(city[:-4].upper().replace("_"," ") + ' -- ' + filter_period_label.upper())
+    print(city[:-4].upper().replace("_", " ") + ' -- ' + filter_period_label.upper())
     print('-------------------------------------')
 
     #To give some context, print the total number of trips for this city and filter
@@ -374,6 +383,13 @@ def statistics():
 
     # Restart?
     def restart_question():
+        '''Conditionally restarts the program based on the user's input
+
+        Args:
+            none.
+        Returns:
+
+        '''
         restart = input('\nWould you like to restart? Type \'yes\' or \'no\'. (If you say no it will end the program.)\n')
         if restart.lower() == 'yes' or restart.lower() == 'y':
             statistics()
